@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Security
+namespace DataAccess.Context
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
