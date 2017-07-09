@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Security.Services;
+using Domain.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Website.Models;
-using Website.Models.ManageViewModels;
-using Website.Services;
+using ViewModels.Security.ManageViewModels;
 
 namespace Website.Controllers
 {

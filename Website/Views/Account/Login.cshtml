@@ -1,7 +1,9 @@
 ﻿@using System.Collections.Generic
+@using Domain.Security
 @using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Http.Authentication
-@model LoginViewModel
+@using ViewModels.Security.AccountViewModels
+@model ViewModels.Security.AccountViewModels.LoginViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 
 @{
