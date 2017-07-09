@@ -1,6 +1,8 @@
 ﻿using Application.Employees;
 using Application.Security.Services;
 using DataAccess.Context;
+using DataAccess.Repository;
+using Domain;
 using Domain.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,9 +50,15 @@ namespace Website
 
             services.AddMvc();
 
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+	        services.AddTransient<IUnitOfWork, PressfordUnitOfWork>();
+			services.AddTransient<IGenericRepository<Employee>, GenericPressfordRepository<Employee>>();
+
+            services.AddTransient<IWriteEmployees, EmployeeWriter>();
 		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

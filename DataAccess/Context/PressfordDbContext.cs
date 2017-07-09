@@ -5,6 +5,8 @@ namespace DataAccess.Context
 {
 	public class PressfordDbContext : DbContext
 	{
+		private PressfordDbContext() { }
+
 		public PressfordDbContext(DbContextOptions<PressfordDbContext> options)
 			: base(options)
 		{
@@ -70,9 +72,9 @@ namespace DataAccess.Context
 			{
 				e.HasKey(x => x.EmployeeId);
 
-				e.Property(x => x.AspNetUserId)
+				e.Property(x => x.Username)
 					.IsRequired()
-					.HasMaxLength(450)
+					.HasMaxLength(256)
 					.IsUnicode();
 				e.Property(x => x.FirstName)
 					.IsRequired()

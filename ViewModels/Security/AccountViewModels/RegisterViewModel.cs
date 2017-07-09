@@ -4,7 +4,16 @@ namespace ViewModels.Security.AccountViewModels
 {
     public class RegisterViewModel
     {
-        [Required]
+
+	    [Required]
+	    [Display(Name = "First Name")]	    
+		public string FirstName { get; set; }
+
+	    [Required]
+	    [Display(Name = "Last Name")]
+	    public string LastName { get; set; }
+
+		[Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -19,5 +28,5 @@ namespace ViewModels.Security.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-    }
+	}
 }

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Application.Employees;
 using Application.Security.Services;
 using Domain.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
@@ -25,6 +23,8 @@ namespace Website.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
         private readonly string _externalCookieScheme;
+		private readonly IWriteEmployees _employeeWriter;
+
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
@@ -32,14 +32,16 @@ namespace Website.Controllers
             IOptions<IdentityCookieOptions> identityCookieOptions,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory, 
+			IWriteEmployees employeeWriter)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _externalCookieScheme = identityCookieOptions.Value.ExternalCookieAuthenticationScheme;
             _emailSender = emailSender;
             _smsSender = smsSender;
-            _logger = loggerFactory.CreateLogger<AccountController>();
+	        _employeeWriter = employeeWriter;
+	        _logger = loggerFactory.CreateLogger<AccountController>();
         }
 
         //
@@ -111,27 +113,40 @@ namespace Website.Controllers
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-	            await _userManager.AddToRoleAsync(user, "employee");
-                if (result.Succeeded)
-                {
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=532713
-                    // Send an email with this link
-                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    //var callbackUrl = Url.Action(nameof(ConfirmEmail), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
-                    //await _emailSender.SendEmailAsync(model.Email, "Confirm your account",
-                    //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation(3, "User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
-            }
+	        if (ModelState.IsValid)
+	        {
+		        var user = new ApplicationUser {UserName = model.Email, Email = model.Email};
 
-            // If we got this far, something failed, redisplay form
+		        var userResult = await _userManager.CreateAsync(user, model.Password);
+		        var roleResult = await _userManager.AddToRoleAsync(user, "employee");
+
+		        if (!userResult.Succeeded || !roleResult.Succeeded)
+		        {
+			        if (userResult.Succeeded)
+				        await _userManager.DeleteAsync(user);
+
+			        AddErrors(userResult);
+			        AddErrors(roleResult);
+
+			        return View(model);
+				}
+
+			    var employee = _employeeWriter.Create(user.NormalizedUserName, model.FirstName, model.LastName);
+
+			    if (employee == null)
+			    {
+					ModelState.AddModelError(string.Empty, "Employee could not be created");
+				    _logger.LogInformation(3, "Employee could not be created in pressford db");
+					await _userManager.DeleteAsync(user);				        
+			    }
+			    else
+			    {
+					await _signInManager.SignInAsync(user, isPersistent: false);
+				    _logger.LogInformation(3, "User created a new account with password.");
+				    return RedirectToLocal(returnUrl);
+				}			        		        
+	        }
+	        // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -228,6 +243,7 @@ namespace Website.Controllers
                         return RedirectToLocal(returnUrl);
                     }
                 }
+
                 AddErrors(result);
             }
 
