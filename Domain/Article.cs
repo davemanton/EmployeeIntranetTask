@@ -5,6 +5,8 @@ namespace Domain
 {
 	public class Article
 	{
+		private Article() { }
+
 		public Article(
 			int authorId,
 			string title,
@@ -32,5 +34,14 @@ namespace Domain
 
 		public virtual Employee Author { get; private set; }
 		public virtual ICollection<ArticleLike> Likes { get; private set; }
+
+		public void Update(int authorId, string title, string summary, string body, DateTime? publishedDate)
+		{
+			AuthorId = authorId;
+			Title = title;
+			Summary = summary;
+			Body = body;
+			PublishedDate = publishedDate;
+		}
 	}
 }

@@ -1,5 +1,7 @@
-﻿using Application.Employees;
+﻿using Application.Articles;
+using Application.Employees;
 using Application.Security.Services;
+using Application.Validators;
 using DataAccess.Context;
 using DataAccess.Repository;
 using Domain;
@@ -11,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ViewModels;
 
 namespace Website
 {
@@ -57,9 +60,15 @@ namespace Website
 
 	        services.AddTransient<IUnitOfWork, PressfordUnitOfWork>();
 			services.AddTransient<IGenericRepository<Employee>, GenericPressfordRepository<Employee>>();
+			services.AddTransient<IGenericRepository<Article>, GenericPressfordRepository<Article>>();
 
-            services.AddTransient<IWriteEmployees, EmployeeWriter>();
-		}
+	        services.AddTransient<IReadArticles, ArticleReader>();
+	        services.AddTransient<IWriteArticles, ArticleWriter>();
+			services.AddTransient<IReadEmployees, EmployeeReader>();
+			services.AddTransient<IWriteEmployees, EmployeeWriter>();
+
+	        services.AddTransient<IValidate<ArticleViewModel>, ArticleViewModelValidator>();
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -86,7 +95,7 @@ namespace Website
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(
+				routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });

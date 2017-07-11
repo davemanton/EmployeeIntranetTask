@@ -4,6 +4,8 @@ namespace Domain
 {
 	public class ArticleLike
 	{
+		private ArticleLike() { }
+
 		public ArticleLike(
 			int articleId,
 			int employeeId

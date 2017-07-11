@@ -4,6 +4,8 @@ namespace Domain
 {
 	public class Employee
 	{
+		private Employee() { }
+
 		public Employee(
 			string username, 
 			string firstName,
