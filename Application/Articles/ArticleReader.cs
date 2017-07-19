@@ -37,6 +37,23 @@ namespace Application.Articles
 			};
 		}
 
+		public IEnumerable<ArticleSummaryViewModel> GetSummaries()
+		{
+			var articles = _articleRepo.Get(x => x.PublishedDate <= DateTime.UtcNow)
+				.Select(x => new ArticleSummaryViewModel
+				{
+					ArticleId = x.ArticleId,
+					Title = x.Title,
+					Summary = x.Summary,
+					AuthorId = x.AuthorId,
+					PublishedDate = x.PublishedDate,
+					Author = $"{x.Author.FirstName} {x.Author.LastName}"
+				})
+				.OrderByDescending(x => x.PublishedDate);
+
+			return articles;
+		}
+
 		public IEnumerable<ArticleSummaryViewModel> GetSummariesByUsername(string username)
 		{
 			var articles =_articleRepo.Get(x => x.Author.Username.Equals(username, StringComparison.OrdinalIgnoreCase), x => x.Author)
@@ -48,7 +65,8 @@ namespace Application.Articles
 					AuthorId = x.AuthorId,
 					PublishedDate = x.PublishedDate,
 					Author = $"{x.Author.FirstName} {x.Author.LastName}"
-				});
+				})
+				.OrderByDescending(x => x.ArticleId);
 
 			return articles;						
 		}		

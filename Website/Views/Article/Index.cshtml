@@ -1,0 +1,24 @@
+@model ViewModels.ArticleViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row">
+	<div class="col-xs-12">
+		<h2>@Model.Title</h2>
+		<h4>By @Model.Author, @Model.PublishedDate.Value.ToString("dd/MM/yyyy")</h4>
+	</div>
+</div>
+<hr/>
+<div class="row">
+	<div class="col-xs-12">
+		@Model.Body
+	</div>
+</div>
+<hr />
+<div class="row">
+	<div class="col-xs-12">
+		<a asp-action="Index" asp-controller="Home">Back to Homepage</a>
+	</div>
+</div>
