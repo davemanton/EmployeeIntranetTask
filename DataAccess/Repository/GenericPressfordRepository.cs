@@ -55,9 +55,14 @@ namespace DataAccess.Repository
 
 		public void Delete(params object[] primaryKeys)
 		{
-			var itemToBeRemoved = GetById(primaryKeys);
+			var itemToDelete = GetById(primaryKeys);
 
-			_dbSet.Remove(itemToBeRemoved);
+			_dbSet.Remove(itemToDelete);
+		}
+
+		public void Delete(T itemToBeRemoved)
+		{
+			_dbSet.Remove(itemToBeRemoved);			
 		}
 	}
 }

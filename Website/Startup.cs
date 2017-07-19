@@ -1,4 +1,5 @@
-﻿using Application.Articles;
+﻿using Application.ArticleLikes;
+using Application.Articles;
 using Application.Employees;
 using Application.Security.Services;
 using Application.Validators;
@@ -59,9 +60,11 @@ namespace Website
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
 	        services.AddTransient<IUnitOfWork, PressfordUnitOfWork>();
-			services.AddTransient<IGenericRepository<Employee>, GenericPressfordRepository<Employee>>();
 			services.AddTransient<IGenericRepository<Article>, GenericPressfordRepository<Article>>();
+			services.AddTransient<IGenericRepository<ArticleLike>, GenericPressfordRepository<ArticleLike>>();
+			services.AddTransient<IGenericRepository<Employee>, GenericPressfordRepository<Employee>>();
 
+	        services.AddTransient<IWriteArticleLikes, ArticleLikeWriter>();
 	        services.AddTransient<IReadArticles, ArticleReader>();
 	        services.AddTransient<IWriteArticles, ArticleWriter>();
 			services.AddTransient<IReadEmployees, EmployeeReader>();

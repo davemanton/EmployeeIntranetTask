@@ -16,14 +16,15 @@ namespace Application.Employees
 			_employeeRepo = employeeRepo;
 		}
 
-		public Employee GetByUsername(string username)
+		public Employee GetByUsername(string username, bool includeLikes = false)
 		{
+			if(includeLikes)
+				return _employeeRepo.Get(
+					x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase),
+					x => x.ArticleLikes
+					)?.SingleOrDefault();
+
 			return _employeeRepo.Get(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase))?.SingleOrDefault();
 		}
-	}
-
-	public interface IReadEmployees
-	{
-		Employee GetByUsername(string username);
 	}
 }

@@ -15,5 +15,6 @@ namespace DataAccess.Repository
 		T Insert(T objectToInsert);
 
 		void Delete(params object[] primaryKeys);
+		void Delete(T objectToDelete);
 	}
 }

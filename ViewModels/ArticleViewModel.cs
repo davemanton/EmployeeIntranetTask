@@ -35,6 +35,8 @@ namespace ViewModels
 		public int AuthorId { get; set; }
 		public string Author { get; set; }
 		public string AuthorUsername { get; set; }
+		public int Likes { get; set; }
+		public bool Liked { get; set; }
 		
 		public IEnumerable<string> ValidationErrors { get; set; }
 	}
