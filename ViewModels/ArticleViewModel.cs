@@ -23,10 +23,7 @@ namespace ViewModels
 			Prompt = "Your article...")]
 		public string Body { get; set; }
 
-		[Display(
-			Name="Publish Date",
-			Prompt = "dd/mm/yyyy hh:mm")]
-		[DisplayFormat(DataFormatString = "dd/MM/yyyy HH:MM")]
+		[Display(Name="Publish Date")]		
 		public DateTime? PublishedDate { get; set; }
 
 		[Display(Name="Article Id")]

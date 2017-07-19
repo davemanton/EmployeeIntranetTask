@@ -24,18 +24,15 @@
 	<div class="form-group">
 		<label asp-for="Body" class="col-md-2 control-label"></label>
 		<div class="col-md-10">
-			<input asp-for="Body" class="form-control" value="@Model.Body" />
+			<textarea asp-for="Body" class="form-control" value="@Model.Body"></textarea>
 			<span asp-validation-for="Body" class="text-danger"></span>
 		</div>
 	</div>
 	<div class="form-group">
 		<label asp-for="PublishedDate" class="col-md-2 control-label"></label>
 		<div class="col-md-10">
-			<input asp-for="PublishedDate" class="form-control" value="@Model.PublishedDate" />
+			<input asp-for="PublishedDate" type="date" class="form-control" value="@string.Format("{0:yyyy-MM-dd}", Model.PublishedDate)" />
 			<span asp-validation-for="PublishedDate" class="text-danger"></span>
 		</div>
 	</div>
 
-@section Scripts {
-	@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-}
