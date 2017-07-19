@@ -1,9 +1,11 @@
 using Application.Stats;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Website.Controllers
 {
-    public class StatsController : Controller
+	[Authorize(Roles = "publisher")]
+	public class StatsController : Controller
     {
 	    private readonly ICalculateArticleStatistics _articleStatisticsCalculator;
 
