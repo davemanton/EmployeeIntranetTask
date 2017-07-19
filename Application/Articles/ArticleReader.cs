@@ -53,10 +53,4 @@ namespace Application.Articles
 			return articles;						
 		}		
 	}
-
-	public interface IReadArticles
-	{
-		ArticleViewModel GetById(int articleId);
-		IEnumerable<ArticleSummaryViewModel> GetSummariesByUsername(string username);
-	}
 }

@@ -30,6 +30,9 @@ namespace Application.Articles
 
 		public ArticleViewModel Create(ArticleViewModel articleVm)
 		{
+			if (articleVm == null)
+				return null;
+
 			IEnumerable<string> errors;
 			if (_viewModelValidator.Validate(articleVm, out errors))
 			{
@@ -43,15 +46,25 @@ namespace Application.Articles
 
 			article = _articleRepo.Insert(article);
 
-			_uow.Save();
+			try
+			{
+				_uow.Save();
 
-			articleVm.ArticleId = article.ArticleId;
+				articleVm.ArticleId = article.ArticleId;
+			}
+			catch
+			{
+				return null;
+			}
 
 			return articleVm;
 		}
 
 		public ArticleViewModel Update(ArticleViewModel articleVm)
 		{
+			if (articleVm == null)
+				return null;
+
 			IEnumerable<string> errors;
 			if (_viewModelValidator.Validate(articleVm, out errors))
 			{
@@ -66,7 +79,14 @@ namespace Application.Articles
 
 			article.Update(articleVm.AuthorId, articleVm.Title, articleVm.Summary, articleVm.Body, articleVm.PublishedDate);
 
-			_uow.Save();			
+			try
+			{
+				_uow.Save();
+			}
+			catch
+			{
+				return null;
+			}
 
 			return articleVm;
 		}
