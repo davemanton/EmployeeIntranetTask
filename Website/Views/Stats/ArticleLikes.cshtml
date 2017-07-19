@@ -1,0 +1,48 @@
+@model ViewModels.ArticleLikesStatsViewModel
+
+@{
+    ViewData["Title"] = "ArticleLikes";
+}
+
+<h2>ArticleLikes</h2>
+
+<div>
+    <h4>Article Likes</h4>
+	<hr />
+	<canvas id="stats"></canvas>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js" ></script>
+	<script>
+		var ctx = document.getElementById('stats').getContext('2d');
+		var chart = new Chart(ctx, {
+			// The type of chart we want to create
+			type: 'bar',
+
+			// The data for our dataset
+			data: {
+				labels: [@foreach (var article in Model.ArticleLikesStats)
+				         {
+							<text>"@(article.Value.Title)",</text>
+				         }],
+				datasets: [{
+					label: "No of likes per article",
+					backgroundColor: 'rgb(255, 99, 132)',
+					borderColor: 'rgb(255, 99, 132)',
+					data: [
+						@foreach (var article in Model.ArticleLikesStats)
+				         {
+					         <text>@article.Value.Likes,</text>
+				         }],
+				}]
+			},
+
+			// Configuration options go here
+			options: {}
+		});
+	</script>
+}

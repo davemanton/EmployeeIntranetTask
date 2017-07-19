@@ -2,6 +2,7 @@
 using Application.Articles;
 using Application.Employees;
 using Application.Security.Services;
+using Application.Stats;
 using Application.Validators;
 using DataAccess.Context;
 using DataAccess.Repository;
@@ -65,9 +66,10 @@ namespace Website
 			services.AddTransient<IGenericRepository<Employee>, GenericPressfordRepository<Employee>>();
 
 	        services.AddTransient<IWriteArticleLikes, ArticleLikeWriter>();
-	        services.AddTransient<IReadArticles, ArticleReader>();
+			services.AddTransient<IReadArticles, ArticleReader>();
 	        services.AddTransient<IWriteArticles, ArticleWriter>();
 			services.AddTransient<IReadEmployees, EmployeeReader>();
+	        services.AddTransient<ICalculateArticleStatistics, ArticleStatisticsCalculator>();
 			services.AddTransient<IWriteEmployees, EmployeeWriter>();
 
 	        services.AddTransient<IValidate<ArticleViewModel>, ArticleViewModelValidator>();

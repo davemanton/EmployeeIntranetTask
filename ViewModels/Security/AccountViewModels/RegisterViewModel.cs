@@ -28,5 +28,8 @@ namespace ViewModels.Security.AccountViewModels
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+	    [Display(Name = "Publisher?")]
+		public bool IsPublisher { get; set; }
 	}
 }

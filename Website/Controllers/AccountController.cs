@@ -120,7 +120,10 @@ namespace Website.Controllers
 		        var userResult = await _userManager.CreateAsync(user, model.Password);
 		        var roleResult = await _userManager.AddToRoleAsync(user, "employee");
 
-		        if (!userResult.Succeeded || !roleResult.Succeeded)
+				if (model.IsPublisher && roleResult.Succeeded)
+					roleResult = await _userManager.AddToRoleAsync(user, "publisher");
+
+				if (!userResult.Succeeded || !roleResult.Succeeded)
 		        {
 			        if (userResult.Succeeded)
 				        await _userManager.DeleteAsync(user);
