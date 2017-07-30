@@ -18,6 +18,8 @@ Once all this is setup you should just be able to hit debug and the website will
 
 ### What to expect ###
 
+This is an example employee intranet task where some employees can publish articles and others can read them.
+
 I've created a fairly straight forward .net core web app and most of the elements are out of the box, for example front end uses standard razor and bootstrap.
 
 The first page you will find the ability to log in or register as a new user, articles are hidden to non-logged in users.  This uses the out of the box individual accounts and roles have been included to manage which pages different users can see.
